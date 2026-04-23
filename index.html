@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfólio Fotográfico | Roger Goltara</title>
+  <meta name="description" content="Portfólio profissional de fotografia com álbuns por categoria, galeria em destaque, contatos e links." />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-soft: #121212;
+      --card: #181818;
+      --line: rgba(255,255,255,0.08);
+      --text: #f5f5f5;
+      --muted: #b7b7b7;
+      --accent: #c9a96b;
+      --accent-2: #8fbf8f;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1180px;
+      --header-h: 88px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #050505 0%, #0c0c0c 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; max-width: 100%; object-fit: cover; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(8,8,8,0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      min-height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .profile {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-size: 1rem;
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-text span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 22px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      transition: 0.3s;
+      font-size: 0.96rem;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: bold;
+      transition: 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #dfc08c);
+      color: #111;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-outline {
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text);
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    section { padding: 88px 0; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: calc(var(--header-h) + 48px);
+    }
+
+    .hero-slider {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 1s ease, transform 6s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.75) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      text-align: left;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      color: var(--accent);
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      font-size: clamp(2.3rem, 5vw, 5.4rem);
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: #dddddd;
+      max-width: 620px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: flex-start;
+      gap: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h3 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      margin-bottom: 6px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 700px;
+    }
+
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .album-card {
+      position: relative;
+      min-height: 360px;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: #101010;
+      transition: 0.35s ease;
+    }
+
+    .album-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201,169,107,0.35);
+    }
+
+    .album-card img {
+      height: 100%;
+      transition: transform 0.6s ease;
+    }
+
+    .album-card:hover img { transform: scale(1.08); }
+
+    .album-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.82) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+
+    .album-overlay h4 {
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .album-overlay span {
+      color: #d0d0d0;
+      font-size: 0.95rem;
+    }
+
+    .featured-grid,
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .photo-card {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .photo-card img {
+      height: 320px;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-card:hover img { transform: scale(1.04); }
+
+    .photo-info {
+      padding: 14px 16px;
+    }
+
+    .photo-info strong { display: block; margin-bottom: 4px; }
+    .photo-info span { color: var(--muted); font-size: 0.92rem; }
+
+    .gallery-panel {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+    }
+
+    .gallery-title {
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .gallery-title h4 {
+      font-size: 1.4rem;
+    }
+
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .about-card,
+    .contact-card,
+    .link-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .about-card p,
+    .contact-card p,
+    .link-card p {
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .contact-list,
+    .links-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .contact-item,
+    .link-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      transition: 0.3s ease;
+      flex-wrap: wrap;
+    }
+
+    .contact-item:hover,
+    .link-item:hover {
+      border-color: rgba(201,169,107,0.35);
+      transform: translateY(-3px);
+    }
+
+    .item-label small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+
+    .item-label strong {
+      font-size: 1rem;
+      word-break: break-word;
+    }
+
+    footer {
+      padding: 24px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .albums-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .featured-grid,
+      .gallery-grid,
+      .contact-grid,
+      .about-wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --header-h: auto; }
+
+      header { position: sticky; }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      nav { width: 100%; }
+
+      nav ul {
+        justify-content: flex-start;
+        gap: 12px 18px;
+      }
+
+      section { padding: 72px 0; }
+
+      .hero {
+        min-height: 92vh;
+        padding-top: 140px;
+      }
+
+      .hero h2 { font-size: 2.15rem; }
+      .hero p { font-size: 0.98rem; }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .albums-grid,
+      .featured-grid,
+      .gallery-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .album-card,
+      .photo-card,
+      .photo-card img {
+        width: 100%;
+      }
+
+      .album-card {
+        min-height: 320px;
+        aspect-ratio: 4 / 5;
+      }
+
+      .photo-card img {
+        height: 260px;
+      }
+
+      .profile { width: 52px; height: 52px; }
+
+      .about-card,
+      .contact-card,
+      .link-card,
+      .gallery-panel {
+        padding: 20px;
+      }
+
+      .gallery-title {
+        align-items: flex-start;
+      }
+
+      .gallery-title .btn {
+        width: 100%;
+      }
+
+      .contact-item,
+      .link-item {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: min(calc(100% - 20px), var(--max));
+      }
+
+      .hero {
+        padding-top: 150px;
+      }
+
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+
+      .album-overlay,
+      .photo-info {
+        padding: 16px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="profile">
+          <img src="D:\arquivos_site\Design sem nome.png" alt="Foto de perfil do fotógrafo" />
+        </div>
+        <div class="brand-text">
+          <h1>Roger Goltara</h1>
+          <span>Fotografia Profissional</span>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#inicio" class="active">Início</a></li>
+          <li><a href="#albuns">Álbuns</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-slider">
+         <div class="slide active"><img src="banner1.jpg" /></div>
+        <div class="slide"><img src="banner2.jpg" alt="Banner 2" /></div>
+        <div class="slide"><img src="banner3.jpg" alt="Banner 3" /></div>
+        <div class="slide"><img src="banner4.jpg" alt="Banner 4" /></div>
+        <div class="slide"><img src="banner5.jpg" alt="Banner 5" /></div>
+        <div class="slide"><img src="banner6.jpg" alt="Banner 5" /></div>
+      </div>
+
+      <div class="container hero-content reveal">
+        <span class="eyebrow">Portfólio</span>
+        <h2>Imagens que contam histórias com impacto e elegância.</h2>
+        <p>
+          Um portfólio pensado para valorizar cada clique, apresentar álbuns por categoria e facilitar o contato de novos clientes.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#albuns">Ver álbuns</a>
+          <a class="btn btn-outline" href="#contato">Falar comigo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="albuns">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h3>Categorias de álbuns</h3>
+            <p>Selecione uma categoria para visualizar uma coleção com imagens em destaque.</p>
+          </div>
+        </div>
+
+        <div class="albums-grid reveal" id="albumCards"></div>
+
+        <div class="gallery-panel reveal">
+          <div class="gallery-title">
+            <h4 id="galleryHeading">Galeria da categoria: Esportiva</h4>
+            <a href="#contato" class="btn btn-outline">Solicitar orçamento</a>
+          </div>
+          <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre">
+      <div class="container about-wrap reveal">
+        <div class="about-card">
+          <span class="eyebrow">Sobre o fotógrafo</span>
+          <h3 style="font-size:2rem; margin-bottom:12px;">Profissionalismo, sensibilidade e direção visual.</h3>
+          <p>
+            Me chamo Roger Goltara, tenho 20 anos e atuo há mais de um ano na área da fotografia. Ao longo desse período, venho desenvolvendo um olhar atento aos detalhes e à captura de momentos únicos, sempre buscando transmitir emoção e autenticidade em cada imagem.
+          </p>
+          <p>
+            experiência em coberturas de aniversários, formaturas, eventos esportivos e sessões fotográficas, trabalhando com dedicação para entregar registros de alta qualidade e que contem histórias reais através da fotografia.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>+30</strong>
+              <span>eventos realizados</span>
+            </div>
+            <div class="stat">
+              <strong>+1 ano</strong>
+              <span>tempo de atuação</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Foco na qualidade</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="photo-card">
+          <img src="photocard.png" alt="Fotógrafo em ação" style="height: 100%; min-height: 320px;" />
+        </div>
+      </div>
+    </section>
+
+    <section id="contato">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h3>Contato e links</h3>
+            <p>Deixe seus canais principais sempre acessíveis para clientes, parceiros e oportunidades.</p>
+          </div>
+        </div>
+
+        <div class="contact-grid reveal">
+          <div class="contact-card">
+            <span class="eyebrow">Fale comigo</span>
+            <h4 style="font-size:1.7rem; margin-top:6px;">Informações de contato</h4>
+
+            <div class="contact-list">
+              <a class="contact-item" href="https://wa.me/5594993019208" target="_blank">
+                <div class="item-label">
+                  <small>WhatsApp</small>
+                  <strong>(94) 99301-9208</strong>
+                </div>
+                <span>Enviar mensagem</span>
+              </a>
+
+              <a class="contact-item" href="mailto:roger.goltara0@gmail.com">
+                <div class="item-label">
+                  <small>Email</small>
+                  <strong>roger.goltara0@gmail.com</strong>
+                </div>
+                <span>Enviar email</span>
+              </a>
+
+              <a class="contact-item" href="https://www.instagram.com/goltarafotog/" target="_blank">
+                <div class="item-label">
+                  <small>Instagram</small>
+                  <strong>@goltarafotog</strong>
+                </div>
+                <span>Ver perfil</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Roger Goltara Fotografia. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+    }
+
+    if (slides.length > 1) {
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }, 4000);
+    }
+
+    const albumData = {
+      Esportiva: [       
+        'esporte1.jpeg',
+        'esporte2.jpg',
+        'esporte3.jpeg',
+        'esporte4.jpeg',
+        'esporte5.jpg',
+        'esporte6.jpg',
+      ],      
+      Formaturas: [
+        'formatura1.jpg',
+        'formatura2.jpg',
+        'formatura3.png',
+        'formatura4.jpg',
+        'formatura5.jpeg',
+        'formatura6.jpg',
+      ],
+      Ensaios: [
+        'ensaio3.jpg',
+        'ensaio2.jpg',
+        'ensaio4.jpg',
+        'ensaio1.jpg',
+        'ensaio5.jpg',
+        'ensaio6.jpg',
+      ]
+    };
+
+    const albumCover = {
+       Esportiva: 'album_esportes.jpeg',
+      Formaturas: 'album_formatura.jpg',
+      Ensaios: 'album_ensaios.jpg',
+    };
+
+    const albumDesc = {
+      Esportiva: 'Coberturas cheias de energia, movimento e emoção.',
+      Formaturas: 'Momentos marcantes capturados com presença profissional.',
+      Ensaios: 'Produções autorais com identidade e direção visual.'
+    };
+
+    const albumCards = document.getElementById('albumCards');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const galleryHeading = document.getElementById('galleryHeading');
+
+    function renderAlbumCards() {
+      Object.keys(albumData).forEach(category => {
+        const card = document.createElement('article');
+        card.className = 'album-card';
+        card.innerHTML = `
+          <img src="${albumCover[category]}" alt="Capa da categoria ${category}" />
+          <div class="album-overlay">
+            <h4>${category}</h4>
+            <span>${albumDesc[category]}</span>
+          </div>
+        `;
+        card.addEventListener('click', () => renderGallery(category));
+        albumCards.appendChild(card);
+      });
+    }
+
+    function renderGallery(category) {
+      galleryHeading.textContent = `Galeria da categoria: ${category}`;
+      galleryGrid.innerHTML = '';
+
+      albumData[category].forEach((src, index) => {
+        const item = document.createElement('article');
+        item.className = 'photo-card';
+        item.innerHTML = `
+          <img src="${src}" alt="${category} ${index + 1}" />
+          <div class="photo-info">
+            <strong>${category} ${index + 1}</strong>
+            <span>Imagem em destaque da coleção</span>
+          </div>
+        `;
+        galleryGrid.appendChild(item);
+      });
+    }
+
+    renderAlbumCards();
+    renderGallery('Esportiva');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('main section');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 140;
+        if (scrollY >= sectionTop) current = section.getAttribute('id');
+      });
+
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      });
+    });
+  </script>
+</body>
+</html>
